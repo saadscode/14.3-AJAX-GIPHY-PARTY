@@ -1,7 +1,7 @@
 console.log("Let's get this party started!");
 
 document
-  .querySelector(".gif-form")
+  .querySelector("#gifForm")
   .addEventListener("submit", async function (event) {
     event.preventDefault();
 
@@ -17,8 +17,22 @@ document
           api_key: apiKey,
         },
       });
-      console.log(response.data);
+      const gifUrl = response.data.data[0].images.fixed_height.url;
+      const gifElement = document.createElement("img");
+      gifElement.src = gifUrl;
+      document.querySelector(".container").appendChild(gifElement);
     } catch (error) {
       console.log(error);
     }
   });
+
+document.querySelector("#removeButton").addEventListener("click", function () {
+  const gifs = document.querySelectorAll(".container img");
+  gifs.forEach(function (gif) {
+    gif.remove();
+  });
+  document.querySelector("searchButton").addEventListener("click", function () {
+    const searchInput = document.querySelector("#searchInput");
+    searchInput.value = "";
+  });
+});
